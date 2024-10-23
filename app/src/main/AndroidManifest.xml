@@ -12,15 +12,34 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SpacesbyYG"
         tools:targetApi="31">
+
+        <!-- MainActivity definition -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+        <!-- RoomSelectionActivity definition -->
+        <activity android:name=".RoomSelectionActivity" />
+
+        <!-- TimeAndCalendarActivity definition -->
+        <activity android:name=".TimeAndCalendarActivity" />
+
+        <!-- UserInfoActivity definition -->
+        <activity android:name=".UserInfoActivity" />
+
+        <!-- ThankYouActivity definition -->
+        <activity android:name=".ThankYouActivity" />
+
+        <!-- AdminLoginActivity definition -->
+        <activity android:name=".AdminLoginActivity" />
+
+        <!-- AdminPortalActivity definition -->
+        <activity android:name=".AdminPortalActivity" />
+
+    </application>
 </manifest>

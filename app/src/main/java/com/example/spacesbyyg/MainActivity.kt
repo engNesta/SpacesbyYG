@@ -1,22 +1,30 @@
 package com.example.spacesbyyg
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main)  // Make sure this matches the new XML layout
 
-        // Adjust window insets for better display (optional, based on your original setup)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        // Get references to the buttons
+        val bookTimeButton: Button = findViewById(R.id.bookTimeButton)
+        val adminPortalButton: Button = findViewById(R.id.adminPortalButton)
+
+        // Navigate to Room Selection when "Book Time" is pressed
+        bookTimeButton.setOnClickListener {
+            val intent = Intent(this, RoomSelectionActivity::class.java)
+            startActivity(intent)
+        }
+
+        // Navigate to Admin Portal (placeholder for now)
+        adminPortalButton.setOnClickListener {
+            // You can add admin logic here later
+            val intent = Intent(this, AdminLoginActivity::class.java)  // Placeholder, create this activity later
+            startActivity(intent)
         }
     }
 }
