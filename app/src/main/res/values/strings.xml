@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">SpacesbyYG</string>
+    <string name="error_empty_email">Please enter your email address.</string>
+    <string name="error_empty_password">Please enter your password.</string>
+    <string name="error_invalid_email_format">Please enter a valid email address.</string>
+    <string name="error_invalid_credentials">Invalid email or password. Please try again.</string>
+    <string name="error_email_in_use">This email address is already in use.</string>
+    <string name="error_authentication_failed">Authentication failed. Please try again later.</string>
 </resources>
