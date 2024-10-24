@@ -63,4 +63,15 @@
         android:minHeight="48dp"
         android:padding="8dp"
         android:layout_marginTop="16dp" />
+
+    <!-- Back Button -->
+    <Button
+        android:id="@+id/backToTimeCalendarButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Back to Time and Calendar"
+        android:minHeight="48dp"
+        android:padding="8dp"
+        android:layout_marginTop="16dp" />
+
 </LinearLayout>

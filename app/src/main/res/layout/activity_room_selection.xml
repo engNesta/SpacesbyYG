@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -15,18 +14,21 @@
         android:id="@+id/conferenceRoomButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Conference Room"/>
+        android:text="Conference Room"
+        android:backgroundTint="@android:color/darker_gray" />
 
     <Button
         android:id="@+id/creativeRoomButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Creative Room"/>
+        android:text="Creative Room"
+        android:backgroundTint="@android:color/darker_gray" />
 
     <Button
         android:id="@+id/continueButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Continue"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        android:enabled="false" /> <!-- Disabled initially -->
 </LinearLayout>
