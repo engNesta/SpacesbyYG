@@ -1,27 +1,55 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:gravity="center"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@drawable/spaces"
+    android:fitsSystemWindows="true">
 
-    <!-- Book Time Button -->
-    <Button
-        android:id="@+id/bookTimeButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Book Time"
-        android:layout_marginBottom="16dp"
-        android:minHeight="48dp"
-        android:minWidth="200dp" />
+        android:gravity="center"
+        android:padding="35dp"
+        android:orientation="vertical">
 
-    <!-- Admin Portal Button -->
-    <Button
-        android:id="@+id/adminPortalButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Admin Portal"
-        android:minHeight="48dp"
-        android:minWidth="200dp" />
-</LinearLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/spaces_text" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="By Youngstival"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="@null"
+            android:layout_marginBottom="250dp" />
+
+        <!-- Book Time Button -->
+        <Button
+            android:id="@+id/bookTimeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Book Time"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="#32CD32"
+            android:minHeight="48dp"
+            android:minWidth="200dp"
+            android:textColor="#FFFFFF" />
+
+        <!-- Admin Portal Button -->
+        <Button
+            android:id="@+id/adminPortalButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Admin Portal"
+            android:backgroundTint="#32CD32"
+            android:minHeight="48dp"
+            android:minWidth="200dp"
+            android:textColor="#FFFFFF"/>
+    </LinearLayout>
+</RelativeLayout>
