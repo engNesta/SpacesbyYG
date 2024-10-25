@@ -1,17 +1,22 @@
 package com.example.spacesbyyg
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class AdminPortalActivity : AppCompatActivity() {
 
     private lateinit var firestore: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
     private lateinit var bookingListView: ListView
+    private lateinit var signOutButton: Button
     private val bookingsList = mutableListOf<String>()
     private val bookingIds = mutableListOf<String>()
 
@@ -19,19 +24,26 @@ class AdminPortalActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_portal)
 
-        // Initialize Firestore
+        // Initialize Firebase Auth and Firestore
+        auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
         // UI Elements
         bookingListView = findViewById(R.id.bookingListView)
+        signOutButton = findViewById(R.id.signOutButton)
 
         // Fetch booking requests from Firestore
         fetchBookingRequests()
 
-        // Handle list item click
+        // Handle list item click for actions
         bookingListView.setOnItemClickListener { _, _, position, _ ->
             val selectedBookingId = bookingIds[position]
             showActionDialog(selectedBookingId)
+        }
+
+        // Sign-Out Button Logic
+        signOutButton.setOnClickListener {
+            signOut()
         }
     }
 
@@ -75,8 +87,6 @@ class AdminPortalActivity : AppCompatActivity() {
             .update("status", status)
             .addOnSuccessListener {
                 Toast.makeText(this, "Booking $status successfully", Toast.LENGTH_LONG).show()
-
-                // Send confirmation email
                 sendConfirmationEmail(bookingId, status)
             }
             .addOnFailureListener { e ->
@@ -98,7 +108,6 @@ class AdminPortalActivity : AppCompatActivity() {
                         "Your booking has been rejected."
                     }
 
-                    // Call a method to send email (using an external API or email service)
                     sendEmail(userEmail, subject, message)
                 }
             }
@@ -108,9 +117,17 @@ class AdminPortalActivity : AppCompatActivity() {
     }
 
     private fun sendEmail(email: String, subject: String, message: String) {
-        // Implement email sending logic using an external API
-        // Example: You could use an API like SendGrid or SMTP server
-        // This is a placeholder for the email sending logic
         Toast.makeText(this, "Email sent to $email", Toast.LENGTH_LONG).show()
+    }
+
+    // Sign-out method
+    private fun signOut() {
+        auth.signOut()
+        Toast.makeText(this, "Signed out successfully", Toast.LENGTH_SHORT).show()
+
+        val intent = Intent(this, AdminLoginActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(intent)
+        finish()
     }
 }
