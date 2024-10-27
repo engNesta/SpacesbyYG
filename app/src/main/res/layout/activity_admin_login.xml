@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Updated activity_admin_login.xml -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,8 +10,8 @@
 
     <TextView
         android:id="@+id/loggaInTextView"
-        android:layout_width="186dp"
-        android:layout_height="61dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Logga in"
         android:textSize="24sp"
         android:textColor="#FFFFFF"
@@ -20,23 +20,26 @@
         android:layout_marginTop="20dp" />
 
     <LinearLayout
-        android:layout_width="311dp"
-        android:layout_height="324dp"
+        android:id="@+id/credentialsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/linear_background"
-        android:gravity="center"
         android:orientation="vertical"
         android:paddingLeft="35dp"
         android:paddingRight="35dp"
         android:paddingTop="35dp"
         android:paddingBottom="60dp"
         android:layout_below="@id/loggaInTextView"
-        android:layout_marginTop="40dp">
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp">
 
+        <!-- Username EditText -->
         <EditText
             android:id="@+id/usernameEditText"
-            android:layout_width="255dp"
+            android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/hint_background"
             android:hint="Username"
             android:inputType="text"
@@ -45,21 +48,31 @@
             android:textColorHint="@color/white"
             android:textSize="20sp" />
 
+        <!-- Password EditText -->
         <EditText
             android:id="@+id/passwordEditText"
-            android:layout_width="255dp"
+            android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:layout_marginTop="16dp"
             android:background="@drawable/hint_background"
-            android:fitsSystemWindows="true"
             android:hint="Password"
-            android:inputType="text"
+            android:inputType="textPassword"
             android:padding="15dp"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textSize="20sp" />
+
+        <!-- Show Password CheckBox -->
+        <CheckBox
+            android:id="@+id/showPasswordCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show Password"
+            android:textColor="@color/white"
+            android:layout_marginTop="8dp" />
+
     </LinearLayout>
 
+    <!-- Login Button -->
     <Button
         android:id="@+id/loginButton"
         android:layout_width="160dp"
@@ -69,6 +82,8 @@
         android:text="Login"
         android:textSize="20sp"
         android:textColor="#FFFFFF"
-        android:layout_marginTop="500dp"
-        android:layout_marginLeft="85dp" />
+        android:layout_below="@id/credentialsLayout"
+        android:layout_marginTop="24dp"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

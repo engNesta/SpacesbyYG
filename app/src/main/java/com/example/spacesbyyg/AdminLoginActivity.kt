@@ -2,22 +2,27 @@ package com.example.spacesbyyg
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log // For logging
+import android.text.InputType
+import android.util.Log
 import android.util.Patterns
-import android.widget.Button
-import android.widget.EditText
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.*
 
 class AdminLoginActivity : AppCompatActivity() {
 
-    // Declare FirebaseAuth instance
+    // FirebaseAuth instance
     private lateinit var auth: FirebaseAuth
 
     // UI Elements
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
+    private lateinit var showPasswordCheckBox: CheckBox
     private lateinit var loginButton: Button
+
+    companion object {
+        private const val TAG = "AdminLoginActivity"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,9 +33,23 @@ class AdminLoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_admin_login)
 
         // Initialize UI Elements
-        emailEditText = findViewById(R.id.usernameEditText) // Assuming it's for email
+        emailEditText = findViewById(R.id.usernameEditText)
         passwordEditText = findViewById(R.id.passwordEditText)
+        showPasswordCheckBox = findViewById(R.id.showPasswordCheckBox)
         loginButton = findViewById(R.id.loginButton)
+
+        // Show Password CheckBox Logic
+        showPasswordCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                // Show password
+                passwordEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            } else {
+                // Hide password
+                passwordEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            }
+            // Move the cursor to the end of the text
+            passwordEditText.setSelection(passwordEditText.text.length)
+        }
 
         // Login Button Logic
         loginButton.setOnClickListener {
@@ -47,6 +66,14 @@ class AdminLoginActivity : AppCompatActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            updateUI(currentUser)
+        }
+    }
+
     private fun validateInputs(email: String, password: String): Boolean {
         var isValid = true
 
@@ -56,17 +83,17 @@ class AdminLoginActivity : AppCompatActivity() {
 
         // Check for empty email
         if (email.isEmpty()) {
-            emailEditText.error = getString(R.string.error_empty_email)
+            emailEditText.error = "Email is required"
             isValid = false
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             // Validate email format
-            emailEditText.error = getString(R.string.error_invalid_email_format)
+            emailEditText.error = "Invalid email format"
             isValid = false
         }
 
         // Check for empty password
         if (password.isEmpty()) {
-            passwordEditText.error = getString(R.string.error_empty_password)
+            passwordEditText.error = "Password is required"
             isValid = false
         }
 
@@ -104,16 +131,16 @@ class AdminLoginActivity : AppCompatActivity() {
         when (exception) {
             is FirebaseAuthInvalidUserException -> {
                 // Email address not found
-                emailEditText.error = getString(R.string.error_invalid_credentials)
+                emailEditText.error = "Invalid email or password"
             }
             is FirebaseAuthInvalidCredentialsException -> {
                 // Wrong password or invalid email format
                 when (exception.errorCode) {
                     "ERROR_WRONG_PASSWORD" -> {
-                        passwordEditText.error = getString(R.string.error_invalid_credentials)
+                        passwordEditText.error = "Invalid email or password"
                     }
                     "ERROR_INVALID_EMAIL" -> {
-                        emailEditText.error = getString(R.string.error_invalid_email_format)
+                        emailEditText.error = "Invalid email format"
                     }
                     else -> {
                         showGenericAuthError()
@@ -129,7 +156,7 @@ class AdminLoginActivity : AppCompatActivity() {
 
     private fun showGenericAuthError() {
         // Show a generic error message
-        val message = getString(R.string.error_authentication_failed)
+        val message = "Authentication failed. Please try again."
         emailEditText.error = message
         passwordEditText.error = message
     }
@@ -147,9 +174,5 @@ class AdminLoginActivity : AppCompatActivity() {
             // Optionally, clear the password field
             passwordEditText.text.clear()
         }
-    }
-
-    companion object {
-        private const val TAG = "AdminLoginActivity"
     }
 }

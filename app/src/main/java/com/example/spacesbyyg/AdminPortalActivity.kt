@@ -1,13 +1,15 @@
+// AdminPortalActivity.kt
 package com.example.spacesbyyg
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -15,31 +17,43 @@ class AdminPortalActivity : AppCompatActivity() {
 
     private lateinit var firestore: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
-    private lateinit var bookingListView: ListView
+    private lateinit var bookingRecyclerView: RecyclerView
     private lateinit var signOutButton: Button
-    private val bookingsList = mutableListOf<String>()
-    private val bookingIds = mutableListOf<String>()
+    private val bookingsList = mutableListOf<Booking>()
+    private lateinit var bookingAdapter: BookingAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_admin_portal)
 
         // Initialize Firebase Auth and Firestore
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
+        // Check if user is signed in
+        if (auth.currentUser == null) {
+            // User not signed in, redirect to login
+            val intent = Intent(this, AdminLoginActivity::class.java)
+            startActivity(intent)
+            finish()
+            return
+        }
+
+        setContentView(R.layout.activity_admin_portal)
+
         // UI Elements
-        bookingListView = findViewById(R.id.bookingListView)
+        bookingRecyclerView = findViewById(R.id.bookingRecyclerView)
         signOutButton = findViewById(R.id.signOutButton)
+
+        // Initialize RecyclerView and Adapter
+        bookingAdapter = BookingAdapter(bookingsList) { booking ->
+            // Handle item click
+            showActionDialog(booking)
+        }
+        bookingRecyclerView.layoutManager = LinearLayoutManager(this)
+        bookingRecyclerView.adapter = bookingAdapter
 
         // Fetch booking requests from Firestore
         fetchBookingRequests()
-
-        // Handle list item click for actions
-        bookingListView.setOnItemClickListener { _, _, position, _ ->
-            val selectedBookingId = bookingIds[position]
-            showActionDialog(selectedBookingId)
-        }
 
         // Sign-Out Button Logic
         signOutButton.setOnClickListener {
@@ -51,72 +65,71 @@ class AdminPortalActivity : AppCompatActivity() {
         firestore.collection("Bookings")
             .get()
             .addOnSuccessListener { result ->
+                bookingsList.clear()
                 for (document in result) {
-                    val userName = document.getString("userName")
-                    val room = document.getString("room")
-                    val day = document.getString("day")
-                    val time = document.getString("time")
-                    bookingsList.add("$userName - $room - $day $time")
-                    bookingIds.add(document.id)
+                    val booking = Booking(
+                        id = document.id,
+                        userName = document.getString("userName"),
+                        userEmail = document.getString("userEmail"),
+                        room = document.getString("room"),
+                        day = document.getString("day"),
+                        time = document.getString("time"),
+                        status = document.getString("status")
+                    )
+                    bookingsList.add(booking)
                 }
-
-                // Bind the data to ListView
-                val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, bookingsList)
-                bookingListView.adapter = adapter
+                bookingAdapter.notifyDataSetChanged()
             }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Failed to load bookings: ${e.message}", Toast.LENGTH_LONG).show()
             }
     }
 
-    private fun showActionDialog(bookingId: String) {
+    private fun showActionDialog(booking: Booking) {
         val options = arrayOf("Accept & Confirm", "Reject")
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Choose an action")
         builder.setItems(options) { _, which ->
             when (which) {
-                0 -> updateBookingStatus(bookingId, "confirmed")
-                1 -> updateBookingStatus(bookingId, "rejected")
+                0 -> updateBookingStatus(booking, "confirmed")
+                1 -> updateBookingStatus(booking, "rejected")
             }
         }
         builder.show()
     }
 
-    private fun updateBookingStatus(bookingId: String, status: String) {
-        firestore.collection("Bookings").document(bookingId)
+    private fun updateBookingStatus(booking: Booking, status: String) {
+        firestore.collection("Bookings").document(booking.id)
             .update("status", status)
             .addOnSuccessListener {
                 Toast.makeText(this, "Booking $status successfully", Toast.LENGTH_LONG).show()
-                sendConfirmationEmail(bookingId, status)
+                sendConfirmationEmail(booking, status)
+                // Update the status locally and refresh the item
+                booking.status = status
+                bookingAdapter.notifyItemChanged(bookingsList.indexOf(booking))
             }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Failed to update booking: ${e.message}", Toast.LENGTH_LONG).show()
             }
     }
 
-    private fun sendConfirmationEmail(bookingId: String, status: String) {
-        firestore.collection("Bookings").document(bookingId)
-            .get()
-            .addOnSuccessListener { document ->
-                val userEmail = document.getString("userEmail")
+    private fun sendConfirmationEmail(booking: Booking, status: String) {
+        val userEmail = booking.userEmail
 
-                if (userEmail != null) {
-                    val subject = "Booking $status"
-                    val message = if (status == "confirmed") {
-                        "Your booking has been confirmed!"
-                    } else {
-                        "Your booking has been rejected."
-                    }
+        if (userEmail != null) {
+            val subject = "Booking $status"
+            val message = if (status == "confirmed") {
+                "Your booking has been confirmed!"
+            } else {
+                "Your booking has been rejected."
+            }
 
-                    sendEmail(userEmail, subject, message)
-                }
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Failed to send email: ${e.message}", Toast.LENGTH_LONG).show()
-            }
+            sendEmail(userEmail, subject, message)
+        }
     }
 
     private fun sendEmail(email: String, subject: String, message: String) {
+        // Implement email sending logic here
         Toast.makeText(this, "Email sent to $email", Toast.LENGTH_LONG).show()
     }
 
