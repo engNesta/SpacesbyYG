@@ -2,7 +2,6 @@
 package com.example.spacesbyyg
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
@@ -12,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 
 class AdminPortalActivity : AppCompatActivity() {
 
@@ -63,6 +63,7 @@ class AdminPortalActivity : AppCompatActivity() {
 
     private fun fetchBookingRequests() {
         firestore.collection("Bookings")
+            .orderBy("createdAt", Query.Direction.DESCENDING) // Order by createdAt descending
             .get()
             .addOnSuccessListener { result ->
                 bookingsList.clear()
@@ -74,7 +75,8 @@ class AdminPortalActivity : AppCompatActivity() {
                         room = document.getString("room"),
                         day = document.getString("day"),
                         time = document.getString("time"),
-                        status = document.getString("status")
+                        status = document.getString("status"),
+                        createdAt = document.getTimestamp("createdAt") // Retrieve the timestamp
                     )
                     bookingsList.add(booking)
                 }
@@ -92,7 +94,7 @@ class AdminPortalActivity : AppCompatActivity() {
         builder.setItems(options) { _, which ->
             when (which) {
                 0 -> updateBookingStatus(booking, "confirmed")
-                1 -> updateBookingStatus(booking, "rejected")
+                1 -> rejectAndDeleteBooking(booking)
             }
         }
         builder.show()
@@ -113,17 +115,40 @@ class AdminPortalActivity : AppCompatActivity() {
             }
     }
 
+    private fun rejectAndDeleteBooking(booking: Booking) {
+        firestore.collection("Bookings").document(booking.id)
+            .delete()
+            .addOnSuccessListener {
+                Toast.makeText(this, "Booking rejected and deleted successfully", Toast.LENGTH_LONG).show()
+                sendRejectionEmail(booking)
+                // Remove the booking from the local list and refresh the adapter
+                val position = bookingsList.indexOf(booking)
+                if (position != -1) {
+                    bookingsList.removeAt(position)
+                    bookingAdapter.notifyItemRemoved(position)
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Failed to delete booking: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+    }
+
     private fun sendConfirmationEmail(booking: Booking, status: String) {
         val userEmail = booking.userEmail
 
         if (userEmail != null) {
             val subject = "Booking $status"
-            val message = if (status == "confirmed") {
-                "Your booking has been confirmed!"
-            } else {
-                "Your booking has been rejected."
-            }
+            val message = "Your booking has been confirmed!"
+            sendEmail(userEmail, subject, message)
+        }
+    }
 
+    private fun sendRejectionEmail(booking: Booking) {
+        val userEmail = booking.userEmail
+
+        if (userEmail != null) {
+            val subject = "Booking Rejected"
+            val message = "We regret to inform you that your booking has been rejected."
             sendEmail(userEmail, subject, message)
         }
     }

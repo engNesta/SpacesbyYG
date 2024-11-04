@@ -1,6 +1,8 @@
 // Booking.kt
 package com.example.spacesbyyg
 
+import com.google.firebase.Timestamp
+
 data class Booking(
     val id: String,
     val userName: String?,
@@ -8,5 +10,6 @@ data class Booking(
     val room: String?,
     val day: String?,
     val time: String?,
-    var status: String?
+    var status: String?,
+    val createdAt: Timestamp? // Added timestamp field
 )

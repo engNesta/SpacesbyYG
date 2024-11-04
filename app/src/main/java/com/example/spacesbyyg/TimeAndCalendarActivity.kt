@@ -1,3 +1,4 @@
+// TimeAndCalendarActivity.kt
 package com.example.spacesbyyg
 
 import android.content.Intent
@@ -7,21 +8,21 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.firestore.FirebaseFirestore
 import androidx.core.content.ContextCompat
+import com.google.firebase.firestore.FirebaseFirestore
 
 class TimeAndCalendarActivity : AppCompatActivity() {
 
     private lateinit var selectedDay: String
     private lateinit var selectedTime: String
-    private lateinit var firestore: FirebaseFirestore
+    private lateinit var selectedRoom: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_time_selection)
 
-        // Initialize Firestore
-        firestore = FirebaseFirestore.getInstance()
+        // Retrieve the selected room from the intent
+        selectedRoom = intent.getStringExtra("room") ?: ""
 
         // Time Slot Layout (Initially Hidden)
         val timeSlotLayout: LinearLayout = findViewById(R.id.timeSlotLayout)
@@ -72,7 +73,7 @@ class TimeAndCalendarActivity : AppCompatActivity() {
             if (this::selectedDay.isInitialized && this::selectedTime.isInitialized) {
                 // Navigate to UserInfoActivity to collect user information
                 val intent = Intent(this, UserInfoActivity::class.java)
-                intent.putExtra("room", intent.getStringExtra("room")) // Pass the selected room
+                intent.putExtra("room", selectedRoom) // Pass the selected room
                 intent.putExtra("day", selectedDay) // Pass the selected day
                 intent.putExtra("time", selectedTime) // Pass the selected time
                 startActivity(intent)
@@ -90,11 +91,11 @@ class TimeAndCalendarActivity : AppCompatActivity() {
     }
 
     private fun checkAvailability(selectedDay: String, morningSlotButton: Button, afternoonSlotButton: Button) {
-        val room = intent.getStringExtra("room") // Get the selected room
+        val firestore = FirebaseFirestore.getInstance()
         val bookingsRef = firestore.collection("Bookings")
 
         // Query Firestore to check if the time slots are booked
-        bookingsRef.whereEqualTo("room", room)
+        bookingsRef.whereEqualTo("room", selectedRoom)
             .whereEqualTo("day", selectedDay)
             .get()
             .addOnSuccessListener { documents ->

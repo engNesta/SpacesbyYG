@@ -1,3 +1,4 @@
+// UserInfoActivity.kt
 package com.example.spacesbyyg
 
 import android.content.Intent
@@ -7,11 +8,16 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 
 class UserInfoActivity : AppCompatActivity() {
 
     private lateinit var firestore: FirebaseFirestore
+    private lateinit var selectedRoom: String
+    private lateinit var selectedDay: String
+    private lateinit var selectedTime: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,9 +27,9 @@ class UserInfoActivity : AppCompatActivity() {
         firestore = FirebaseFirestore.getInstance()
 
         // Retrieve data from the previous activity (room, day, and time)
-        val selectedRoom = intent.getStringExtra("room")
-        val selectedDay = intent.getStringExtra("day")
-        val selectedTime = intent.getStringExtra("time")
+        selectedRoom = intent.getStringExtra("room") ?: ""
+        selectedDay = intent.getStringExtra("day") ?: ""
+        selectedTime = intent.getStringExtra("time") ?: ""
 
         // UI Elements
         val nameField: EditText = findViewById(R.id.userName)
@@ -47,8 +53,17 @@ class UserInfoActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Submit the booking directly (no duplicate checking)
-            submitBooking(userEmail, userPhone, selectedRoom, selectedDay, selectedTime, userName, userSurname, userCompany)
+            // Submit the booking
+            submitBooking(
+                userEmail,
+                userPhone,
+                selectedRoom,
+                selectedDay,
+                selectedTime,
+                userName,
+                userSurname,
+                userCompany
+            )
         }
 
         // Back to Time and Calendar button logic
@@ -56,6 +71,7 @@ class UserInfoActivity : AppCompatActivity() {
             val intent = Intent(this, TimeAndCalendarActivity::class.java)
             intent.putExtra("room", selectedRoom) // Keep the selected room
             startActivity(intent) // Go back to the Time and Calendar selection
+            finish()
         }
     }
 
@@ -98,8 +114,14 @@ class UserInfoActivity : AppCompatActivity() {
 
     // Submit booking to Firestore
     private fun submitBooking(
-        email: String, phone: String, room: String?, day: String?, time: String?,
-        name: String, surname: String, company: String
+        email: String,
+        phone: String,
+        room: String?,
+        day: String?,
+        time: String?,
+        name: String,
+        surname: String,
+        company: String
     ) {
         val bookingData = hashMapOf(
             "room" to room,
@@ -109,7 +131,9 @@ class UserInfoActivity : AppCompatActivity() {
             "userSurname" to surname,
             "userEmail" to email,
             "userPhone" to phone,
-            "userCompany" to company
+            "userCompany" to company,
+            "createdAt" to FieldValue.serverTimestamp(), // Add this line
+            "status" to "pending" // Initialize status as pending
         )
 
         // Store booking information in Firestore
@@ -120,11 +144,10 @@ class UserInfoActivity : AppCompatActivity() {
                 val intent = Intent(this, ThankYouActivity::class.java)
                 intent.putExtra("name", name) // Pass user name to thank-you page
                 startActivity(intent)
+                finish()
             }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Failed to submit booking: ${e.message}", Toast.LENGTH_LONG).show()
             }
     }
 }
-
-
