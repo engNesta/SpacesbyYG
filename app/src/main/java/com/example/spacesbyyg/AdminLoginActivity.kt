@@ -8,6 +8,11 @@ import android.util.Patterns
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.*
+import android.os.Build;
+import android.view.View;
+import android.view.WindowManager;
+import android.graphics.Color;
+
 
 class AdminLoginActivity : AppCompatActivity() {
 
@@ -29,6 +34,20 @@ class AdminLoginActivity : AppCompatActivity() {
 
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val window = window
+            // Clear FLAG_TRANSLUCENT_STATUS flag:
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            // Add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            // Set the status bar to transparent
+            window.statusBarColor = Color.TRANSPARENT
+
+            // Make the content appear behind the status bar
+            window.decorView.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        }
 
         setContentView(R.layout.activity_admin_login)
 

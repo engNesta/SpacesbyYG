@@ -1,0 +1,13 @@
+<!-- res/values/styles.xml -->
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Make the status bar transparent -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!-- Allow the window content to be drawn behind the status bar -->
+        <item name="android:windowTranslucentStatus">true</item>
+        <!-- Optional: Remove action bar if not needed -->
+        <item name="windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+</resources>
