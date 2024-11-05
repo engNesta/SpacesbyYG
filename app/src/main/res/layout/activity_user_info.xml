@@ -1,77 +1,99 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:gravity="center"
+    android:padding="16dp"
+    android:background="#232323">
 
-    <!-- Name Field -->
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Din Information"
+        android:textSize="24sp"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="24dp"
+        android:fontFamily="sans-serif-medium"
+        android:textAlignment="center"/>
+
+    <!-- Input Fields with Dark Background -->
     <EditText
-        android:id="@+id/userName"
+        android:id="@+id/etFirstName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="First Name"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        android:padding="8dp" />
+        android:hint="*Förnamn"
+        android:backgroundTint="#444444"
+        android:textColorHint="#888888"
+        android:textColor="#FFFFFF"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="sans-serif"
+        android:inputType="textPersonName"/>
 
-    <!-- Surname Field -->
     <EditText
-        android:id="@+id/userSurname"
+        android:id="@+id/etLastName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Surname"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        android:padding="8dp" />
+        android:hint="*Efternamn"
+        android:backgroundTint="#444444"
+        android:textColorHint="#888888"
+        android:textColor="#FFFFFF"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="sans-serif"
+        android:inputType="textPersonName"/>
 
-    <!-- Company Field -->
     <EditText
-        android:id="@+id/userCompany"
+        android:id="@+id/etCompany"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Company/Organization"
-        android:minHeight="48dp"
-        android:padding="8dp" />
+        android:hint="Företag"
+        android:backgroundTint="#444444"
+        android:textColorHint="#888888"
+        android:textColor="#FFFFFF"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="sans-serif"
+        android:inputType="text"/>
 
-    <!-- Email Field -->
     <EditText
-        android:id="@+id/userEmail"
+        android:id="@+id/etEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:minHeight="48dp"
-        android:padding="8dp" />
+        android:hint="*E-Post"
+        android:backgroundTint="#444444"
+        android:textColorHint="#888888"
+        android:textColor="#FFFFFF"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="sans-serif"
+        android:inputType="textEmailAddress"/>
 
-    <!-- Phone Number Field -->
     <EditText
-        android:id="@+id/userPhone"
+        android:id="@+id/etMobile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Phone Number"
-        android:inputType="phone"
-        android:minHeight="48dp"
-        android:padding="8dp" />
+        android:hint="*Mobil"
+        android:backgroundTint="#444444"
+        android:textColorHint="#888888"
+        android:textColor="#FFFFFF"
+        android:padding="12dp"
+        android:layout_marginBottom="24dp"
+        android:fontFamily="sans-serif"
+        android:inputType="phone"/>
 
-    <!-- Submit Button -->
+    <!-- Confirm Button with Green Background -->
     <Button
-        android:id="@+id/submitBookingButton"
+        android:id="@+id/btnConfirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Submit Booking"
-        android:minHeight="48dp"
-        android:padding="8dp"
-        android:layout_marginTop="16dp" />
-
-    <!-- Back Button -->
-    <Button
-        android:id="@+id/backToTimeCalendarButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Back to Time and Calendar"
-        android:minHeight="48dp"
-        android:padding="8dp"
-        android:layout_marginTop="16dp" />
-
+        android:text="Bekrefte"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#6FBF73"
+        android:padding="12dp"
+        android:fontFamily="sans-serif-medium"
+        android:textAllCaps="false"/>
 </LinearLayout>
