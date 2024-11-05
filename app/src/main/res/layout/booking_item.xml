@@ -6,7 +6,8 @@
     android:layout_margin="8dp"
     android:elevation="4dp"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:backgroundTint="#2E2E2E"> <!-- Dark background for card -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,7 +22,8 @@
             android:layout_height="wrap_content"
             android:text="User Name"
             android:textStyle="bold"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textColor="#FFFFFF" /> <!-- White text -->
 
         <!-- Room -->
         <TextView
@@ -30,7 +32,8 @@
             android:layout_height="wrap_content"
             android:text="Room"
             android:textSize="14sp"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="4dp"
+            android:textColor="#CCCCCC" /> <!-- Light gray text -->
 
         <!-- Date and Time -->
         <TextView
@@ -39,17 +42,18 @@
             android:layout_height="wrap_content"
             android:text="Date and Time"
             android:textSize="14sp"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="4dp"
+            android:textColor="#CCCCCC" /> <!-- Light gray text -->
 
-        <!-- Status -->
+        <!-- Status with green color for accent -->
         <TextView
             android:id="@+id/statusTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Status"
             android:textSize="14sp"
-            android:textColor="@color/material_dynamic_tertiary80"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="4dp"
+            android:textColor="#6FBF73" /> <!-- Green text for status -->
 
     </LinearLayout>
 
