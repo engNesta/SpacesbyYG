@@ -22,4 +22,11 @@
         <item name="android:textColor">#FFFFFF</item> <!-- White color -->
         <item name="android:textSize">14sp</item>
     </style>
+    <!-- res/values/styles.xml -->
+        <style name="BlackButtonStyle" parent="android:Widget.Button">
+            <item name="android:background">@drawable/square_button</item>
+            <item name="android:textColor">#FFFFFF</item>
+            <item name="android:backgroundTintMode">src_over</item> <!-- This line should override tinting -->
+        </style>
+
 </resources>

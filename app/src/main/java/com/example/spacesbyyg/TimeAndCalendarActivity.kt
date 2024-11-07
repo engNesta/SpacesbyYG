@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.CalendarView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -13,11 +14,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import android.os.Build;
 import android.view.WindowManager;
 import android.graphics.Color;
-
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TimeAndCalendarActivity : AppCompatActivity() {
 
-    private lateinit var selectedDay: String
+    private lateinit var selectedDate: String
     private lateinit var selectedTime: String
     private lateinit var selectedRoom: String
 
@@ -43,7 +45,8 @@ class TimeAndCalendarActivity : AppCompatActivity() {
         // Retrieve the selected room from the intent
         selectedRoom = intent.getStringExtra("room") ?: ""
 
-        // Time Slot Layout (Initially Hidden)
+        // Initialize views
+        val calendarView: CalendarView = findViewById(R.id.calendarView)
         val timeSlotLayout: LinearLayout = findViewById(R.id.timeSlotLayout)
         val morningSlotButton: Button = findViewById(R.id.morningSlotButton)
         val afternoonSlotButton: Button = findViewById(R.id.afternoonSlotButton)
@@ -53,25 +56,18 @@ class TimeAndCalendarActivity : AppCompatActivity() {
         // Disable continue button initially
         continueButton.isEnabled = false
 
-        // Day Selection Logic: Update IDs based on your XML
-        val dayButtons = listOf(
-            findViewById<Button>(R.id.sundayButton),
-            findViewById<Button>(R.id.mondayButton),
-            findViewById<Button>(R.id.tuesdayButton),
-            findViewById<Button>(R.id.wednesdayButton),
-            findViewById<Button>(R.id.thursdayButton),
-            findViewById<Button>(R.id.fridayButton),
-            findViewById<Button>(R.id.saturdayButton)
-        )
+        // Date formatter
+        val dateFormat = SimpleDateFormat("EEE, MMM d, yyyy", Locale.getDefault())
 
-        // Logic for selecting a day and querying Firestore for availability
-        for (dayButton in dayButtons) {
-            dayButton.setOnClickListener {
-                selectedDay = dayButton.text.toString()
-                timeSlotLayout.visibility = View.VISIBLE // Show time slots
-                checkAvailability(selectedDay, morningSlotButton, afternoonSlotButton)
-                Toast.makeText(this, "Selected Day: $selectedDay", Toast.LENGTH_SHORT).show()
-            }
+        // Handle date selection
+        calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            val calendar = Calendar.getInstance()
+            calendar.set(year, month, dayOfMonth)
+            selectedDate = dateFormat.format(calendar.time)
+            // Show time slots
+            timeSlotLayout.visibility = View.VISIBLE
+            // Check availability for the selected date
+            checkAvailability(selectedDate, morningSlotButton, afternoonSlotButton)
         }
 
         // Time Slot Selection Logic
@@ -89,15 +85,15 @@ class TimeAndCalendarActivity : AppCompatActivity() {
 
         // Continue Button Logic
         continueButton.setOnClickListener {
-            if (this::selectedDay.isInitialized && this::selectedTime.isInitialized) {
+            if (this::selectedDate.isInitialized && this::selectedTime.isInitialized) {
                 // Navigate to UserInfoActivity to collect user information
                 val intent = Intent(this, UserInfoActivity::class.java)
                 intent.putExtra("room", selectedRoom) // Pass the selected room
-                intent.putExtra("day", selectedDay) // Pass the selected day
+                intent.putExtra("date", selectedDate) // Pass the selected date
                 intent.putExtra("time", selectedTime) // Pass the selected time
                 startActivity(intent)
             } else {
-                Toast.makeText(this, "Please select a day and time", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Please select a date and time", Toast.LENGTH_LONG).show()
             }
         }
 
@@ -109,13 +105,13 @@ class TimeAndCalendarActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkAvailability(selectedDay: String, morningSlotButton: Button, afternoonSlotButton: Button) {
+    private fun checkAvailability(selectedDate: String, morningSlotButton: Button, afternoonSlotButton: Button) {
         val firestore = FirebaseFirestore.getInstance()
         val bookingsRef = firestore.collection("Bookings")
 
         // Query Firestore to check if the time slots are booked
         bookingsRef.whereEqualTo("room", selectedRoom)
-            .whereEqualTo("day", selectedDay)
+            .whereEqualTo("date", selectedDate)
             .get()
             .addOnSuccessListener { documents ->
                 var morningSlotBooked = false
@@ -150,7 +146,7 @@ class TimeAndCalendarActivity : AppCompatActivity() {
     }
 
     private fun enableContinueButtonIfReady(continueButton: Button) {
-        if (this::selectedDay.isInitialized && this::selectedTime.isInitialized) {
+        if (this::selectedDate.isInitialized && this::selectedTime.isInitialized) {
             continueButton.isEnabled = true
         }
     }

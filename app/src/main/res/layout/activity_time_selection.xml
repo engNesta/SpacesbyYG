@@ -3,79 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:gravity="center_horizontal">
+    android:background="@drawable/spaces"
+    android:gravity="center">
 
-    <!-- Days of the week, horizontally aligned -->
-    <LinearLayout
+    <!-- CalendarView -->
+    <CalendarView
+        android:id="@+id/calendarView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:theme="@style/Theme.AppCompat"
+        android:layout_height="wrap_content" />
 
-        <Button
-            android:id="@+id/sundayButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sun"
-            android:minWidth="48dp"
-            android:minHeight="48dp"
-            android:padding="8dp" />
-
-        <Button
-            android:id="@+id/mondayButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Mon"
-            android:minWidth="48dp"
-            android:minHeight="48dp"
-            android:padding="8dp" />
-
-        <Button
-            android:id="@+id/tuesdayButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tue"
-            android:minWidth="48dp"
-            android:minHeight="48dp"
-            android:padding="8dp" />
-
-        <Button
-            android:id="@+id/wednesdayButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Wed"
-            android:minWidth="48dp"
-            android:minHeight="48dp"
-            android:padding="8dp" />
-
-        <Button
-            android:id="@+id/thursdayButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Thu"
-            android:minWidth="48dp"
-            android:minHeight="48dp"
-            android:padding="8dp" />
-
-        <Button
-            android:id="@+id/fridayButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Fri"
-            android:minWidth="48dp"
-            android:minHeight="48dp"
-            android:padding="8dp" />
-
-        <Button
-            android:id="@+id/saturdayButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sat"
-            android:minWidth="48dp"
-            android:minHeight="48dp"
-            android:padding="8dp" />
-    </LinearLayout>
-
-    <!-- Time slots, hidden initially -->
+    <!-- Time slots -->
     <LinearLayout
         android:id="@+id/timeSlotLayout"
         android:layout_width="wrap_content"
@@ -89,8 +27,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="8:00 - 12:00"
-            android:minWidth="48dp"
-            android:minHeight="48dp"
             android:padding="8dp" />
 
         <Button
@@ -98,8 +34,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="13:00 - 18:00"
-            android:minWidth="48dp"
-            android:minHeight="48dp"
             android:padding="8dp" />
     </LinearLayout>
 
@@ -110,15 +44,14 @@
         android:layout_height="wrap_content"
         android:text="Continue"
         android:layout_marginTop="16dp"
-        android:minHeight="48dp"
         android:enabled="false" />
 
     <!-- Back to Rooms button -->
     <Button
         android:id="@+id/backToRoomsButton"
         android:layout_width="match_parent"
+        android:backgroundTint="@color/lime_green"
         android:layout_height="wrap_content"
         android:text="Back to Rooms"
-        android:layout_marginTop="16dp"
-        android:minHeight="48dp" />
+        android:layout_marginTop="16dp" />
 </LinearLayout>
