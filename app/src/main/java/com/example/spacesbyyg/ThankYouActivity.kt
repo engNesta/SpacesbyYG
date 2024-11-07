@@ -13,21 +13,13 @@ import android.graphics.Color;
 class ThankYouActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val window = window
-            // Clear FLAG_TRANSLUCENT_STATUS flag:
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            // Add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            // Set the status bar to transparent
-            window.statusBarColor = Color.TRANSPARENT
-
-            // Make the content appear behind the status bar
-            window.decorView.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        }
         setContentView(R.layout.activity_thank_you)
+
+        // Make the status bar transparent
+        window.decorView.systemUiVisibility =
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = Color.TRANSPARENT
 
         // UI Elements
         val thankYouTextView = findViewById<TextView>(R.id.thankYouTextView)
@@ -49,7 +41,12 @@ class ThankYouActivity : AppCompatActivity() {
 
         // Logic for Exit Button: Close the app
         exitButton.setOnClickListener {
-            finishAffinity() // Close the app entirely
+            // Replace MainActivity with the starting activity of your app
+            val intent = Intent(this, MainActivity::class.java)
+            // Clear the activity stack to prevent going back to this activity
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            finish()// Close the app entirely
         }
     }
 }

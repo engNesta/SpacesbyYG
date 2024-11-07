@@ -49,3 +49,58 @@ exports.sendAdminNotification = functions.firestore
       console.error('Error sending email:', error);
     }
   });
+
+// Cloud Function to send email on booking status update
+exports.sendUserNotification = functions.firestore
+  .document('Bookings/{bookingId}')
+  .onUpdate(async (change, context) => {
+    console.log('Function triggered on update');
+    const beforeData = change.before.data();
+    const afterData = change.after.data();
+
+    console.log('Before Data:', beforeData);
+    console.log('After Data:', afterData);
+
+    // Check if the booking status has changed
+    if (beforeData.status !== afterData.status) {
+      console.log(`Status changed from ${beforeData.status} to ${afterData.status}`);
+
+      let subject, htmlContent;
+
+      if (afterData.status === 'confirmed') {
+        subject = 'Booking Confirmed';
+        htmlContent = `<p>Your booking has been confirmed:</p>
+                       <p><strong>Room:</strong> ${afterData.room || 'N/A'}</p>
+                       <p><strong>Day:</strong> ${afterData.day || 'N/A'}</p>
+                       <p><strong>Time:</strong> ${afterData.time || 'N/A'}</p>
+                       <p>Thank you for booking with us!</p>`;
+      } else if (afterData.status === 'rejected') {
+        subject = 'Booking Rejected';
+        htmlContent = `<p>Your booking has been rejected:</p>
+                       <p><strong>Room:</strong> ${afterData.room || 'N/A'}</p>
+                       <p><strong>Day:</strong> ${afterData.day || 'N/A'}</p>
+                       <p><strong>Time:</strong> ${afterData.time || 'N/A'}</p>
+                       <p>We are sorry, but your booking could not be accommodated.</p>`;
+      }
+
+      if (subject && htmlContent) {
+        const mailOptions = {
+          from: senderEmail,
+          to: afterData.userEmail,
+          subject: subject,
+          html: htmlContent,
+        };
+
+        try {
+          await transporter.sendMail(mailOptions);
+          console.log(`${subject} email sent to user:`, afterData.userEmail);
+        } catch (error) {
+          console.error('Error sending email:', error);
+        }
+      } else {
+        console.log('No email sent. Status did not change to confirmed or rejected.');
+      }
+    } else {
+      console.log('No status change detected.');
+    }
+  });

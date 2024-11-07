@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.graphics.Color;
+import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -124,7 +126,7 @@ class AdminPortalActivity : AppCompatActivity() {
             .update("status", status)
             .addOnSuccessListener {
                 Toast.makeText(this, "Booking $status successfully", Toast.LENGTH_LONG).show()
-                sendConfirmationEmail(booking, status)
+                // Removed sendConfirmationEmail call
                 // Update the status locally and refresh the item
                 booking.status = status
                 bookingAdapter.notifyItemChanged(bookingsList.indexOf(booking))
@@ -136,11 +138,30 @@ class AdminPortalActivity : AppCompatActivity() {
 
     private fun rejectAndDeleteBooking(booking: Booking) {
         firestore.collection("Bookings").document(booking.id)
+            .update("status", "rejected")
+            .addOnSuccessListener {
+                Toast.makeText(this, "Booking rejected successfully", Toast.LENGTH_LONG).show()
+                // Update local list
+                val position = bookingsList.indexOf(booking)
+                if (position != -1) {
+                    booking.status = "rejected"
+                    bookingAdapter.notifyItemChanged(position)
+                }
+                // Delete after a short delay
+                Handler(Looper.getMainLooper()).postDelayed({
+                    deleteBooking(booking)
+                }, 3000) // Delay in milliseconds
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Failed to update booking: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+    }
+
+    private fun deleteBooking(booking: Booking) {
+        firestore.collection("Bookings").document(booking.id)
             .delete()
             .addOnSuccessListener {
-                Toast.makeText(this, "Booking rejected and deleted successfully", Toast.LENGTH_LONG).show()
-                sendRejectionEmail(booking)
-                // Remove the booking from the local list and refresh the adapter
+                // Remove from list and notify adapter
                 val position = bookingsList.indexOf(booking)
                 if (position != -1) {
                     bookingsList.removeAt(position)
