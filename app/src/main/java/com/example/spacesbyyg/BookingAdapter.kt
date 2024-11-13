@@ -37,7 +37,7 @@ class BookingAdapter(
         val booking = bookings[position]
         holder.userNameTextView.text = booking.userName ?: "Unknown User"
         holder.roomTextView.text = "Room: ${booking.room ?: "N/A"}"
-        holder.dateTimeTextView.text = "Date: ${booking.day ?: "N/A"}, Time: ${booking.time ?: "N/A"}"
+        holder.dateTimeTextView.text = "Date: ${booking.date ?: "N/A"}, Time: ${booking.time ?: "N/A"}"
         holder.statusTextView.text = "Status: ${booking.status ?: "Pending"}"
 
         // Change status text color based on status

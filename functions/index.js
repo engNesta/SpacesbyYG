@@ -27,6 +27,8 @@ exports.sendAdminNotification = functions.firestore
   .onCreate(async (snap, context) => {
     const bookingData = snap.data(); // Get the document data
 
+    console.log('Booking Data:', bookingData); // Add this line
+
     // Compose the email
     const mailOptions = {
       from: senderEmail,
@@ -36,8 +38,10 @@ exports.sendAdminNotification = functions.firestore
              <p><strong>User Name:</strong> ${bookingData.userName || 'N/A'}</p>
              <p><strong>User Email:</strong> ${bookingData.userEmail || 'N/A'}</p>
              <p><strong>Room:</strong> ${bookingData.room || 'N/A'}</p>
-             <p><strong>Day:</strong> ${bookingData.day || 'N/A'}</p>
+             <p><strong>Date:</strong> ${bookingData.date || 'N/A'}</p> <!-- Changed "Day" to "Date" -->
              <p><strong>Time:</strong> ${bookingData.time || 'N/A'}</p>
+             <p><strong>Company:</strong> ${bookingData.userCompany || 'N/A'}</p>
+             <p><strong>Phone:</strong> ${bookingData.userPhone || 'N/A'}</p>
              <p><strong>Status:</strong> ${bookingData.status || 'pending'}</p>
              <p>Please log in to the admin portal to review and confirm the booking.</p>`,
     };
@@ -71,14 +75,14 @@ exports.sendUserNotification = functions.firestore
         subject = 'Booking Confirmed';
         htmlContent = `<p>Your booking has been confirmed:</p>
                        <p><strong>Room:</strong> ${afterData.room || 'N/A'}</p>
-                       <p><strong>Day:</strong> ${afterData.day || 'N/A'}</p>
+                       <p><strong>Date:</strong> ${afterData.date || 'N/A'}</p>
                        <p><strong>Time:</strong> ${afterData.time || 'N/A'}</p>
                        <p>Thank you for booking with us!</p>`;
       } else if (afterData.status === 'rejected') {
         subject = 'Booking Rejected';
         htmlContent = `<p>Your booking has been rejected:</p>
                        <p><strong>Room:</strong> ${afterData.room || 'N/A'}</p>
-                       <p><strong>Day:</strong> ${afterData.day || 'N/A'}</p>
+                       <p><strong>Date:</strong> ${afterData.date || 'N/A'}</p>
                        <p><strong>Time:</strong> ${afterData.time || 'N/A'}</p>
                        <p>We are sorry, but your booking could not be accommodated.</p>`;
       }

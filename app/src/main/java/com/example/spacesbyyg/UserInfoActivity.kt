@@ -18,10 +18,9 @@ import android.graphics.Color;
 
 
 class UserInfoActivity : AppCompatActivity() {
-
     private lateinit var firestore: FirebaseFirestore
     private lateinit var selectedRoom: String
-    private lateinit var selectedDay: String
+    private lateinit var selectedDate: String // Updated from selectedDay to selectedDate
     private lateinit var selectedTime: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,9 +45,9 @@ class UserInfoActivity : AppCompatActivity() {
         // Initialize Firestore
         firestore = FirebaseFirestore.getInstance()
 
-        // Retrieve data from the previous activity (room, day, and time)
+        // Retrieve data from the previous activity (room, date, and time)
         selectedRoom = intent.getStringExtra("room") ?: ""
-        selectedDay = intent.getStringExtra("day") ?: ""
+        selectedDate = intent.getStringExtra("date") ?: "" // Updated key to "date"
         selectedTime = intent.getStringExtra("time") ?: ""
 
         // UI Elements
@@ -75,14 +74,14 @@ class UserInfoActivity : AppCompatActivity() {
 
             // Submit the booking
             submitBooking(
-                userEmail,
-                userPhone,
-                selectedRoom,
-                selectedDay,
-                selectedTime,
-                userName,
-                userSurname,
-                userCompany
+                email = userEmail,
+                phone = userPhone,
+                room = selectedRoom,
+                date = selectedDate,  // Use "selectedDate" here
+                time = selectedTime,
+                name = userName,
+                surname = userSurname,
+                company = userCompany
             )
         }
 
@@ -137,7 +136,7 @@ class UserInfoActivity : AppCompatActivity() {
         email: String,
         phone: String,
         room: String?,
-        day: String?,
+        date: String?,    // Change from "day" to "date"
         time: String?,
         name: String,
         surname: String,
@@ -145,15 +144,15 @@ class UserInfoActivity : AppCompatActivity() {
     ) {
         val bookingData = hashMapOf(
             "room" to room,
-            "day" to day,
+            "date" to date,  // Use "date" here
             "time" to time,
             "userName" to name,
             "userSurname" to surname,
             "userEmail" to email,
             "userPhone" to phone,
             "userCompany" to company,
-            "createdAt" to FieldValue.serverTimestamp(), // Add this line
-            "status" to "pending" // Initialize status as pending
+            "createdAt" to FieldValue.serverTimestamp(),
+            "status" to "pending"
         )
 
         // Store booking information in Firestore

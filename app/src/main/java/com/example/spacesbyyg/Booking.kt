@@ -8,7 +8,7 @@ data class Booking(
     val userName: String?,
     val userEmail: String?,
     val room: String?,
-    val day: String?,
+    val date: String?,
     val time: String?,
     var status: String?,
     val createdAt: Timestamp? // Added timestamp field

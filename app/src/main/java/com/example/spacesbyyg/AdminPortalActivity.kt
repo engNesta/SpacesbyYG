@@ -94,7 +94,7 @@ class AdminPortalActivity : AppCompatActivity() {
                         userName = document.getString("userName"),
                         userEmail = document.getString("userEmail"),
                         room = document.getString("room"),
-                        day = document.getString("day"),
+                        date = document.getString("date"),
                         time = document.getString("time"),
                         status = document.getString("status"),
                         createdAt = document.getTimestamp("createdAt") // Retrieve the timestamp

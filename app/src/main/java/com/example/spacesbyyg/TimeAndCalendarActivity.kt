@@ -86,11 +86,10 @@ class TimeAndCalendarActivity : AppCompatActivity() {
         // Continue Button Logic
         continueButton.setOnClickListener {
             if (this::selectedDate.isInitialized && this::selectedTime.isInitialized) {
-                // Navigate to UserInfoActivity to collect user information
                 val intent = Intent(this, UserInfoActivity::class.java)
-                intent.putExtra("room", selectedRoom) // Pass the selected room
-                intent.putExtra("date", selectedDate) // Pass the selected date
-                intent.putExtra("time", selectedTime) // Pass the selected time
+                intent.putExtra("room", selectedRoom)
+                intent.putExtra("date", selectedDate)  // Ensure you're using "date" here
+                intent.putExtra("time", selectedTime)
                 startActivity(intent)
             } else {
                 Toast.makeText(this, "Please select a date and time", Toast.LENGTH_LONG).show()
@@ -111,7 +110,7 @@ class TimeAndCalendarActivity : AppCompatActivity() {
 
         // Query Firestore to check if the time slots are booked
         bookingsRef.whereEqualTo("room", selectedRoom)
-            .whereEqualTo("date", selectedDate)
+            .whereEqualTo("date", selectedDate) // Querying with "date"
             .get()
             .addOnSuccessListener { documents ->
                 var morningSlotBooked = false
