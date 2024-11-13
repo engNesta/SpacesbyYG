@@ -147,6 +147,7 @@ class TimeAndCalendarActivity : AppCompatActivity() {
     private fun enableContinueButtonIfReady(continueButton: Button) {
         if (this::selectedDate.isInitialized && this::selectedTime.isInitialized) {
             continueButton.isEnabled = true
+            continueButton.backgroundTintList = ContextCompat.getColorStateList(this, R.color.lime_green)
         }
     }
 }

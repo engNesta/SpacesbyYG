@@ -23,7 +23,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="By Youngstival"
+            android:text="Av Youngstival"
             android:gravity="center"
             android:textColor="@color/white"
             android:background="@null"
@@ -34,7 +34,7 @@
             android:id="@+id/bookTimeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Book Time"
+            android:text="Boka tid"
             android:layout_marginBottom="16dp"
             android:backgroundTint="#32CD32"
             android:minHeight="48dp"

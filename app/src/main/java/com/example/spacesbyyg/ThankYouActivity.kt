@@ -30,7 +30,7 @@ class ThankYouActivity : AppCompatActivity() {
         val name = intent.getStringExtra("name")
 
         // Set the thank-you message
-        thankYouTextView.text = "Thank you, $name!"
+        thankYouTextView.text = "Tack, $name!"
 
         // Logic for Re-book Button: Redirect to RoomSelectionActivity
         rebookButton.setOnClickListener {

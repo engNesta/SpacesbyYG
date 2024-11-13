@@ -20,7 +20,7 @@
             android:id="@+id/userNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="User Name"
+            android:text="Användarnamn"
             android:textStyle="bold"
             android:textSize="16sp"
             android:textColor="#FFFFFF" /> <!-- White text -->
@@ -30,7 +30,7 @@
             android:id="@+id/roomTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Room"
+            android:text="Rum"
             android:textSize="14sp"
             android:layout_marginTop="4dp"
             android:textColor="#CCCCCC" /> <!-- Light gray text -->
@@ -40,7 +40,7 @@
             android:id="@+id/dateTimeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date and Time"
+            android:text="Datum och tid"
             android:textSize="14sp"
             android:layout_marginTop="4dp"
             android:textColor="#CCCCCC" /> <!-- Light gray text -->

@@ -41,7 +41,7 @@
             android:layout_height="55dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/hint_background"
-            android:hint="Username"
+            android:hint="Användarnamn"
             android:inputType="text"
             android:padding="15dp"
             android:textColor="@color/white"
@@ -54,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:background="@drawable/hint_background"
-            android:hint="Password"
+            android:hint="Lösenord"
             android:inputType="textPassword"
             android:padding="15dp"
             android:textColor="@color/white"
@@ -66,7 +66,7 @@
             android:id="@+id/showPasswordCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Show Password"
+            android:text="Visa lösenord"
             android:textColor="@color/white"
             android:layout_marginTop="8dp" />
 
