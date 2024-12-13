@@ -63,12 +63,47 @@ class TimeAndCalendarActivity : AppCompatActivity() {
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val calendar = Calendar.getInstance()
             calendar.set(year, month, dayOfMonth)
-            selectedDate = dateFormat.format(calendar.time)
-            // Show time slots
+            val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+            val selectedCalendarTime = calendar.time
+            selectedDate = dateFormat.format(selectedCalendarTime)
+
+            // Get today's date (with time truncated to midnight)
+            val today = Calendar.getInstance()
+            today.set(Calendar.HOUR_OF_DAY, 0)
+            today.set(Calendar.MINUTE, 0)
+            today.set(Calendar.SECOND, 0)
+            today.set(Calendar.MILLISECOND, 0)
+
+            // Check if the selected date is before today
+            if (calendar.before(today)) {
+                // The selected date is in the past, no bookings allowed
+                timeSlotLayout.visibility = View.GONE
+                continueButton.visibility = View.GONE
+                Toast.makeText(this, "Cannot book in the past.", Toast.LENGTH_SHORT).show()
+                return@setOnDateChangeListener
+            }
+
+            // Reset selectedTime and disable continue button whenever date changes
+            if (this::selectedTime.isInitialized) {
+                selectedTime = ""
+            }
+            continueButton.isEnabled = false
+            continueButton.backgroundTintList = ContextCompat.getColorStateList(this, android.R.color.darker_gray)
+
+            // Check if the selected day is a weekend (Saturday=7, Sunday=1)
+            if (dayOfWeek == Calendar.SUNDAY) {
+                timeSlotLayout.visibility = View.GONE
+                continueButton.visibility = View.GONE
+                Toast.makeText(this, "Bookings are not allowed on weekends.", Toast.LENGTH_SHORT).show()
+                return@setOnDateChangeListener
+            }
+
+            // If it's a future weekday, proceed with showing and checking availability
             timeSlotLayout.visibility = View.VISIBLE
-            // Check availability for the selected date
+            continueButton.visibility = View.VISIBLE
             checkAvailability(selectedDate, morningSlotButton, afternoonSlotButton)
         }
+
 
         // Time Slot Selection Logic
         morningSlotButton.setOnClickListener {
