@@ -120,14 +120,11 @@ class UserInfoActivity : AppCompatActivity() {
         }
 
         // Validate Phone (Swedish format)
-        if (phone.isEmpty()) {
-            findViewById<EditText>(R.id.userPhone).error = "Phone number is required"
-            isValid = false
-        } else if (!Patterns.PHONE.matcher(phone).matches() || !phone.startsWith("+46")) {
+        val swedishPhoneRegex = Regex("^(?:0\\d{9,10}|\\+46\\d{9,10})$")
+        if (!swedishPhoneRegex.matches(phone)) {
             findViewById<EditText>(R.id.userPhone).error = "Invalid Swedish phone number format"
             isValid = false
         }
-
         return isValid
     }
 
