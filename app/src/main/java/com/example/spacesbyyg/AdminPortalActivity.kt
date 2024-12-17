@@ -34,25 +34,18 @@ class AdminPortalActivity : AppCompatActivity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val window = window
-            // Clear FLAG_TRANSLUCENT_STATUS flag:
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            // Add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            // Set the status bar to transparent
             window.statusBarColor = Color.TRANSPARENT
-
-            // Make the content appear behind the status bar
             window.decorView.systemUiVisibility =
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         }
 
-        // Initialize Firebase Auth and Firestore
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
         // Check if user is signed in
         if (auth.currentUser == null) {
-            // User not signed in, redirect to login
             val intent = Intent(this, AdminLoginActivity::class.java)
             startActivity(intent)
             finish()
@@ -61,26 +54,32 @@ class AdminPortalActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_admin_portal)
 
-        // UI Elements
+        // Now reference the UI elements
         bookingRecyclerView = findViewById(R.id.bookingRecyclerView)
         signOutButton = findViewById(R.id.signOutButton)
+        val viewAnalyticsButton = findViewById<Button>(R.id.viewAnalyticsButton)
 
-        // Initialize RecyclerView and Adapter
         bookingAdapter = BookingAdapter(bookingsList) { booking ->
-            // Handle item click
             showActionDialog(booking)
         }
         bookingRecyclerView.layoutManager = LinearLayoutManager(this)
         bookingRecyclerView.adapter = bookingAdapter
 
-        // Fetch booking requests from Firestore
+        // Fetch bookings
         fetchBookingRequests()
 
-        // Sign-Out Button Logic
+        // Sign-Out logic
         signOutButton.setOnClickListener {
             signOut()
         }
+
+        // Analytics Button logic
+        viewAnalyticsButton.setOnClickListener {
+            val intent = Intent(this, AnalyticsActivity::class.java)
+            startActivity(intent)
+        }
     }
+
 
     private fun fetchBookingRequests() {
         firestore.collection("Bookings")

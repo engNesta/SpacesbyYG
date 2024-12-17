@@ -41,6 +41,8 @@
 
         <!-- AdminPortalActivity definition -->
         <activity android:name=".AdminPortalActivity" />
+        <activity android:name=".AnalyticsActivity"></activity>
+
 
     </application>
 </manifest>

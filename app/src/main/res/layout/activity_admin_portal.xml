@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
     android:background="#232323">
 
-    <!-- RecyclerView for bookings with dark background -->
+    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/bookingRecyclerView"
         android:layout_width="match_parent"
@@ -14,12 +15,25 @@
         android:layout_weight="1"
         android:background="#232323" />
 
-    <!-- Sign-Out Button with green background -->
+    <!-- View Analytics Button -->
+    <Button
+        android:id="@+id/viewAnalyticsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="View Analytics"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#6FBF73"
+        android:minHeight="48dp"
+        android:padding="12dp"
+        android:fontFamily="sans-serif-medium"
+        android:textAllCaps="false" />
+
+    <!-- Sign-Out Button -->
     <Button
         android:id="@+id/signOutButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:text="Logga ut"
         android:textColor="#FFFFFF"
         android:backgroundTint="#6FBF73"
