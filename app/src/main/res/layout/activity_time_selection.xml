@@ -42,6 +42,7 @@
         android:id="@+id/continueButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        
         android:text="Fortsätta"
         android:layout_marginTop="16dp"
         android:enabled="false" />
@@ -50,7 +51,7 @@
     <Button
         android:id="@+id/backToRoomsButton"
         android:layout_width="match_parent"
-        android:backgroundTint="@color/lime_green"
+        android:backgroundTint="#8ED567"
         android:layout_height="wrap_content"
         android:text="Tillbaka till rum"
         android:layout_marginTop="16dp" />

@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:text="Boka tid"
             android:layout_marginBottom="16dp"
-            android:backgroundTint="#32CD32"
+            android:backgroundTint="#8ED567"
             android:minHeight="48dp"
             android:minWidth="200dp"
             android:textColor="#FFFFFF" />
@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Admin Portal"
-            android:backgroundTint="#32CD32"
+            android:backgroundTint="#8ED567"
             android:minHeight="48dp"
             android:minWidth="200dp"
             android:textColor="#FFFFFF"/>

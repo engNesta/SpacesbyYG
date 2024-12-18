@@ -33,7 +33,7 @@
         android:textStyle="bold"
         android:text="Conference"
         android:layout_marginBottom="35dp"
-        android:backgroundTint="#32CD32" />
+        android:backgroundTint="#8ED567" />
 
     <ImageView
         android:layout_width="295dp"
@@ -48,7 +48,7 @@
         android:textStyle="bold"
         android:text="Creative"
         android:layout_marginBottom="35dp"
-        android:backgroundTint="#32CD32" />
+        android:backgroundTint="#8ED567" />
 
     <Button
         android:id="@+id/continueButton"
@@ -57,7 +57,7 @@
         android:textStyle="bold"
         android:textColor="@color/white"
         android:text="Fortsätta"
-        android:backgroundTint="#32CD32"
+        android:backgroundTint="#8ED567"
         android:layout_marginTop="16dp"
         android:enabled="false" /> <!-- Disabled initially -->
     </LinearLayout>
