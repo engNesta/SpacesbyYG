@@ -102,17 +102,17 @@ class AdminLoginActivity : AppCompatActivity() {
 
         // Check for empty email
         if (email.isEmpty()) {
-            emailEditText.error = "Email is required"
+            emailEditText.error = "E-post krävs"
             isValid = false
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             // Validate email format
-            emailEditText.error = "Invalid email format"
+            emailEditText.error = "Ogiltigt e-postformat"
             isValid = false
         }
 
         // Check for empty password
         if (password.isEmpty()) {
-            passwordEditText.error = "Password is required"
+            passwordEditText.error = "Lösenord krävs"
             isValid = false
         }
 

@@ -79,7 +79,7 @@ class TimeAndCalendarActivity : AppCompatActivity() {
                 // The selected date is in the past, no bookings allowed
                 timeSlotLayout.visibility = View.GONE
                 continueButton.visibility = View.GONE
-                Toast.makeText(this, "Cannot book in the past.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Datum i det förflutna är inte tillåtet. Välj ett giltigt datum.", Toast.LENGTH_SHORT).show()
                 return@setOnDateChangeListener
             }
 
@@ -94,7 +94,7 @@ class TimeAndCalendarActivity : AppCompatActivity() {
             if (dayOfWeek == Calendar.SUNDAY) {
                 timeSlotLayout.visibility = View.GONE
                 continueButton.visibility = View.GONE
-                Toast.makeText(this, "Bookings are not allowed on weekends.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Bokningar är inte tillåtna på söndagar. Välj en annan dag.", Toast.LENGTH_SHORT).show()
                 return@setOnDateChangeListener
             }
 
@@ -109,13 +109,13 @@ class TimeAndCalendarActivity : AppCompatActivity() {
         morningSlotButton.setOnClickListener {
             selectedTime = "8:00 - 12:00"
             enableContinueButtonIfReady(continueButton)
-            Toast.makeText(this, "Selected Morning Slot", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Vald morgontid", Toast.LENGTH_SHORT).show()
         }
 
         afternoonSlotButton.setOnClickListener {
             selectedTime = "13:00 - 18:00"
             enableContinueButtonIfReady(continueButton)
-            Toast.makeText(this, "Selected Afternoon Slot", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Vald eftermiddagstid", Toast.LENGTH_SHORT).show()
         }
 
         // Continue Button Logic
@@ -127,7 +127,7 @@ class TimeAndCalendarActivity : AppCompatActivity() {
                 intent.putExtra("time", selectedTime)
                 startActivity(intent)
             } else {
-                Toast.makeText(this, "Please select a date and time", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Vänligen välj ett datum och en tid", Toast.LENGTH_LONG).show()
             }
         }
 
@@ -165,7 +165,7 @@ class TimeAndCalendarActivity : AppCompatActivity() {
                 updateSlotButtonState(afternoonSlotButton, afternoonSlotBooked)
             }
             .addOnFailureListener {
-                Toast.makeText(this, "Failed to fetch availability", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Misslyckades med att hämta tillgänglighet", Toast.LENGTH_SHORT).show()
             }
     }
 

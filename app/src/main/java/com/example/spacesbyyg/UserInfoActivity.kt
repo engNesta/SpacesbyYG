@@ -100,29 +100,29 @@ class UserInfoActivity : AppCompatActivity() {
 
         // Validate Name
         if (name.isEmpty()) {
-            findViewById<EditText>(R.id.userName).error = "Name is required"
+            findViewById<EditText>(R.id.userName).error = "Namn är obligatoriskt"
             isValid = false
         }
 
         // Validate Surname
         if (surname.isEmpty()) {
-            findViewById<EditText>(R.id.userSurname).error = "Surname is required"
+            findViewById<EditText>(R.id.userSurname).error = "Efternamn är obligatoriskt"
             isValid = false
         }
 
         // Validate Email
         if (email.isEmpty()) {
-            findViewById<EditText>(R.id.userEmail).error = "Email is required"
+            findViewById<EditText>(R.id.userEmail).error = "E-postadress är obligatorisk"
             isValid = false
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            findViewById<EditText>(R.id.userEmail).error = "Invalid email format"
+            findViewById<EditText>(R.id.userEmail).error = "Ogiltigt e-postformat"
             isValid = false
         }
 
         // Validate Phone (Swedish format)
         val swedishPhoneRegex = Regex("^(?:0\\d{9,10}|\\+46\\d{9,10})$")
         if (!swedishPhoneRegex.matches(phone)) {
-            findViewById<EditText>(R.id.userPhone).error = "Invalid Swedish phone number format"
+            findViewById<EditText>(R.id.userPhone).error = "Ogiltigt svenskt telefonnummerformat"
             isValid = false
         }
         return isValid
@@ -163,7 +163,7 @@ class UserInfoActivity : AppCompatActivity() {
                 finish()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Failed to submit booking: ${e.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Det gick inte att skicka bokningen: ${e.message}", Toast.LENGTH_LONG).show()
             }
     }
 }

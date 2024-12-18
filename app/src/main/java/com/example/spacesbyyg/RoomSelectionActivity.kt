@@ -81,7 +81,7 @@ class RoomSelectionActivity : AppCompatActivity() {
                 intent.putExtra("room", selectedRoom) // Passing selected room to next activity
                 startActivity(intent)
             } else {
-                Toast.makeText(this, "Please select a room", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Vänligen välj ett rum", Toast.LENGTH_SHORT).show()
             }
         }
     }
