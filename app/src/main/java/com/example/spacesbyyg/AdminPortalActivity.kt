@@ -101,6 +101,10 @@ class AdminPortalActivity : AppCompatActivity() {
                     bookingsList.add(booking)
                 }
                 bookingAdapter.notifyDataSetChanged()
+                // Check if there are no bookings
+                if (bookingsList.isEmpty()) {
+                    Toast.makeText(this, "Inga bokningar", Toast.LENGTH_SHORT).show()
+                }
             }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Failed to load bookings: ${e.message}", Toast.LENGTH_LONG).show()

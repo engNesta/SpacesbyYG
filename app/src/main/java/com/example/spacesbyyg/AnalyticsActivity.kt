@@ -1,7 +1,11 @@
 package com.example.spacesbyyg
 
+import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -27,19 +31,22 @@ class AnalyticsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val window = window
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.statusBarColor = Color.TRANSPARENT
+            window.decorView.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        }
         // Set the content view to our analytics layout
         setContentView(R.layout.activity_analytics)
-
-        // Set up the toolbar from the layout for a modern app bar
-        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.analyticsToolbar)
-        setSupportActionBar(toolbar)
 
         // Initialize UI elements
         barChart = findViewById(R.id.barChart)
         monthSpinner = findViewById(R.id.monthSpinner)
         yearEditText = findViewById(R.id.yearEditText)
         fetchButton = findViewById(R.id.fetchButton)
-
         // Initialize Firestore for database queries
         firestore = FirebaseFirestore.getInstance()
 
@@ -74,6 +81,16 @@ class AnalyticsActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please enter a valid year.", Toast.LENGTH_SHORT).show()
             }
         }
+
+        //Redirect to the booking section
+        val viewBookingButton = findViewById<Button>(R.id.viewBooking)
+        viewBookingButton.setOnClickListener {
+            val intent = Intent(this, AdminPortalActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            finish()
+        }
+
     }
 
     private fun setupMonthSpinner() {
@@ -84,7 +101,8 @@ class AnalyticsActivity : AppCompatActivity() {
         )
 
         // Create an adapter to populate the spinner with month names
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, months)
+        val adapter = ArrayAdapter(this, R.layout.my_spinner_item, months)
+        adapter.setDropDownViewResource(R.layout.my_spinner_item)
         monthSpinner.adapter = adapter
     }
 
@@ -100,12 +118,14 @@ class AnalyticsActivity : AppCompatActivity() {
         val xAxis = barChart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.setDrawGridLines(false)
-        xAxis.textColor = Color.BLACK
+        xAxis.textColor = Color.WHITE
+        xAxis.axisLineColor = Color.WHITE // X-axis line in white
 
         // Configure the left Y-axis, no grid lines, black text
         val yAxisLeft = barChart.axisLeft
         yAxisLeft.setDrawGridLines(false)
-        yAxisLeft.textColor = Color.BLACK
+        yAxisLeft.textColor = Color.WHITE
+        yAxisLeft.axisLineColor = Color.WHITE
 
         // Force Y-axis to show whole numbers by setting granularity and custom formatter
         yAxisLeft.granularity = 1f
@@ -213,11 +233,6 @@ class AnalyticsActivity : AppCompatActivity() {
         // Fit the bars so they nicely align with the chart edges
         barChart.setFitBars(true)
 
-        // Get the month name from the spinner for chart description
-        val monthName = (monthSpinner.adapter.getItem(month) as String)
-        barChart.description.isEnabled = true
-        barChart.description.text = "Confirmed Bookings for $monthName $year"
-        barChart.description.textColor = Color.WHITE
 
         // Set the labels (room names) on the X-axis
         barChart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)

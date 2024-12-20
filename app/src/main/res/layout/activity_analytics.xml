@@ -5,35 +5,28 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/windowBackground">
-
-    <!-- Top Toolbar -->
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/analyticsToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:title="Room Bookings Analytics"
-        android:titleTextColor="@android:color/white"
-        android:background="?attr/colorPrimary"
-        app:layout_scrollFlags="scroll|enterAlways" />
+    android:background="@color/spaces">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp">
 
+        <!-- Make this inner LinearLayout fill the parent height and center its children -->
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginTop="80dp"
+            > <!-- Center content both horizontally & vertically -->
 
             <!-- Month & Year selection row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center_horizontal"
+                android:orientation="horizontal"
                 android:padding="8dp">
 
                 <!-- Month Spinner -->
@@ -41,39 +34,43 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:paddingEnd="8dp"
-                    android:hint="Select Month">
+                    android:hint="Select Month"
+                    android:paddingEnd="8dp">
 
                     <Spinner
                         android:id="@+id/monthSpinner"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:spinnerMode="dropdown" />
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dropdown"
+                        android:popupBackground="@color/spaces"
+                    />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Year Input -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="Year"
                     android:layout_weight="1"
+                    android:hint="Year"
+                    android:inputType="number"
                     android:paddingStart="8dp"
-                    android:inputType="number">
+                    android:textColorHint="@color/white">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/yearEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="number" />
+                        android:inputType="number"
+                        android:textColor="@color/white" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
-            <!-- Fetch Data Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/fetchButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Fetch Data"
+                android:text="Hämta data"
+                android:textColor="@color/white"
                 android:layout_marginTop="16dp"
                 style="?attr/materialButtonOutlinedStyle"
                 app:cornerRadius="12dp" />
@@ -84,6 +81,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
                 android:layout_marginTop="32dp" />
+
+            <Button
+                android:id="@+id/viewBooking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="16dp"
+                android:text="Se bokning"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#8ED567"
+                android:minHeight="48dp"
+                android:padding="12dp"
+                android:fontFamily="sans-serif-medium"
+                android:textAllCaps="false" />
 
         </LinearLayout>
     </ScrollView>
