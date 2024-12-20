@@ -14,28 +14,29 @@
         android:layout_height="wrap_content"
         android:text="Tack!"
         android:textColor="@color/white"
-        android:textSize="32sp"
+        android:textSize="40sp"
         android:textStyle="bold"
         android:gravity="center"
-        android:padding="16dp" />
+        android:padding="20dp" />
 
     <!-- Description Text -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Din bokningsförfrågan har skickats till administratören. Du kommer att få ett bekräftelsesvar inom kort."
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textColor="@color/white"
         android:gravity="center"
         android:padding="16dp" />
 
     <!-- Buttons for Exit and Re-book -->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginTop="32dp">
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="40dp">
 
         <!-- Re-book Button -->
         <Button
@@ -44,7 +45,7 @@
             android:layout_height="wrap_content"
             android:text="Boka om"
             android:backgroundTint="#8ED567"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="24dp"
             android:minHeight="48dp"
             android:padding="8dp" />
 
