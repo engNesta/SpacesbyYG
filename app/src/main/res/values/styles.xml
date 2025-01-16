@@ -17,6 +17,7 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+
     <!-- Custom Weekday Text Appearance -->
     <style name="CustomWeekDayTextAppearance" parent="TextAppearance.MaterialComponents.Body1">
         <item name="android:textColor">#FFFFFF</item> <!-- White color -->

@@ -27,15 +27,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="8:00 - 12:00"
-            android:padding="8dp" />
+            android:padding="8dp"
+            android:backgroundTint="#8ED567" />
 
         <Button
             android:id="@+id/afternoonSlotButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="13:00 - 18:00"
-            android:padding="8dp" />
+            android:padding="8dp"
+            android:backgroundTint="#8ED567" />
     </LinearLayout>
+
 
     <!-- Continue button -->
     <Button
@@ -54,5 +57,5 @@
         android:backgroundTint="#8ED567"
         android:layout_height="wrap_content"
         android:text="Tillbaka till rum"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="6dp" />
 </LinearLayout>

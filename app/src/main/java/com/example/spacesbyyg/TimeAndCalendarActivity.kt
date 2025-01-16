@@ -87,20 +87,22 @@ class TimeAndCalendarActivity : AppCompatActivity() {
                 selectedTime = ""
             }
             continueButton.isEnabled = false
-            continueButton.backgroundTintList = ContextCompat.getColorStateList(this, android.R.color.darker_gray)
+            continueButton.backgroundTintList =
+                ContextCompat.getColorStateList(this, android.R.color.darker_gray)
 
             // Check if the selected day is Sunday (no bookings allowed)
             if (dayOfWeek == Calendar.SUNDAY) {
                 timeSlotLayout.visibility = View.GONE
                 continueButton.visibility = View.GONE
-                Toast.makeText(this, "Bookings are not allowed on weekends.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Bookings are not allowed on weekends.", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnDateChangeListener
             }
 
             // If it's a future weekday, proceed with showing and checking availability
             timeSlotLayout.visibility = View.VISIBLE
             continueButton.visibility = View.VISIBLE
-            checkAvailability(selectedDate, morningSlotButton, afternoonSlotButton)
+            checkAvailability(selectedDate, morningSlotButton, afternoonSlotButton, continueButton)
         }
 
         // Time Slot Selection Logic
@@ -137,7 +139,12 @@ class TimeAndCalendarActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkAvailability(selectedDate: String, morningSlotButton: Button, afternoonSlotButton: Button) {
+    private fun checkAvailability(
+        selectedDate: String,
+        morningSlotButton: Button,
+        afternoonSlotButton: Button,
+        continueButton: Button
+    ) {
         val firestore = FirebaseFirestore.getInstance()
         val bookingsRef = firestore.collection("Bookings")
 
@@ -164,13 +171,20 @@ class TimeAndCalendarActivity : AppCompatActivity() {
 
                 // After checking availability, apply time-based logic if date is today
                 applyTimeLogicIfToday(selectedDate, morningSlotButton, afternoonSlotButton)
+
+                // Setup click listeners for the buttons
+                setupTimeSlotButtonListeners(morningSlotButton, afternoonSlotButton, continueButton)
             }
             .addOnFailureListener {
                 Toast.makeText(this, "Failed to fetch availability", Toast.LENGTH_SHORT).show()
             }
     }
 
-    private fun applyTimeLogicIfToday(selectedDate: String, morningSlotButton: Button, afternoonSlotButton: Button) {
+    private fun applyTimeLogicIfToday(
+        selectedDate: String,
+        morningSlotButton: Button,
+        afternoonSlotButton: Button
+    ) {
         // Check if the selected date is today's date
         val sdf = SimpleDateFormat("EEE, MMM d, yyyy", Locale.getDefault())
         val selectedCalendarDate = sdf.parse(selectedDate)
@@ -186,7 +200,8 @@ class TimeAndCalendarActivity : AppCompatActivity() {
 
             // If selected date is the same as today, apply time checks
             if (selectedCal.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
-                selectedCal.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)) {
+                selectedCal.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)
+            ) {
 
                 // Current time
                 val currentTime = Calendar.getInstance()
@@ -198,8 +213,10 @@ class TimeAndCalendarActivity : AppCompatActivity() {
                         currentHour >= 12 -> {
                             // Past 12:00, disable morning slot
                             morningSlotButton.isEnabled = false
-                            morningSlotButton.setBackgroundColor(ContextCompat.getColor(this, android.R.color.darker_gray))
+                            morningSlotButton.backgroundTintList =
+                                ContextCompat.getColorStateList(this, R.color.button_disabled)
                         }
+
                         currentHour in 8..11 -> {
                             // Between 8:00 and 12:00
                             val remainingHours = 11 - currentHour // approximate until 12:00
@@ -208,20 +225,29 @@ class TimeAndCalendarActivity : AppCompatActivity() {
                                 "Hurry! Approximately $remainingHours hour(s) left for the morning slot.",
                                 Toast.LENGTH_LONG
                             ).show()
+
+                            // Ensure the button stays green if still enabled
+                            morningSlotButton.backgroundTintList =
+                                ContextCompat.getColorStateList(this, R.color.button_green)
                         }
                     }
                 }
+
 
                 // Afternoon slot: 13:00 - 18:00
                 if (afternoonSlotButton.isEnabled) {
                     when {
                         currentHour >= 18 -> {
-                            // Past 18:00, disable afternoon slot
+                            // Past 18:00, disable afternoon slot and set to gray
                             afternoonSlotButton.isEnabled = false
-                            afternoonSlotButton.setBackgroundColor(ContextCompat.getColor(this, android.R.color.darker_gray))
+                            afternoonSlotButton.backgroundTintList =
+                                ContextCompat.getColorStateList(this, R.color.button_disabled)
                         }
+
                         currentHour in 13..17 -> {
-                            // Between 13:00 and 18:00
+                            // Between 13:00 and 18:00, keep it green
+                            afternoonSlotButton.backgroundTintList =
+                                ContextCompat.getColorStateList(this, R.color.button_green)
                             val remainingHours = 17 - currentHour // approximate until 18:00
                             Toast.makeText(
                                 this,
@@ -231,6 +257,7 @@ class TimeAndCalendarActivity : AppCompatActivity() {
                         }
                     }
                 }
+
             }
         }
     }
@@ -238,17 +265,62 @@ class TimeAndCalendarActivity : AppCompatActivity() {
     private fun updateSlotButtonState(slotButton: Button, isBooked: Boolean) {
         if (isBooked) {
             slotButton.isEnabled = false
-            slotButton.setBackgroundColor(ContextCompat.getColor(this, android.R.color.darker_gray))
+            slotButton.setBackgroundColor(ContextCompat.getColor(this, R.color.button_disabled))
         } else {
             slotButton.isEnabled = true
-            slotButton.setBackgroundColor(ContextCompat.getColor(this, android.R.color.holo_blue_light))
+            slotButton.setBackgroundColor(ContextCompat.getColor(this, R.color.button_green))
         }
     }
 
     private fun enableContinueButtonIfReady(continueButton: Button) {
         if (this::selectedDate.isInitialized && this::selectedTime.isInitialized) {
             continueButton.isEnabled = true
-            continueButton.backgroundTintList = ContextCompat.getColorStateList(this, R.color.lime_green)
+            continueButton.backgroundTintList =
+                ContextCompat.getColorStateList(this, R.color.lime_green)
         }
+    }
+
+    // New: Listener for Time Slot Buttons
+    private fun setupTimeSlotButtonListeners(
+        morningSlotButton: Button,
+        afternoonSlotButton: Button,
+        continueButton: Button
+    ) {
+        morningSlotButton.setOnClickListener {
+            // If morning slot is selected, turn it dark green
+            morningSlotButton.setBackgroundColor(ContextCompat.getColor(this, R.color.dark_green))
+            selectedTime = "8:00 - 12:00" // Set the selected time
+
+            // Disable the afternoon slot button
+            afternoonSlotButton.isEnabled = false
+            afternoonSlotButton.setBackgroundColor(ContextCompat.getColor(this, R.color.button_disabled))
+
+            // Enable the continue button if conditions are met
+            enableContinueButtonIfReady(continueButton)
+        }
+
+        afternoonSlotButton.setOnClickListener {
+            // If afternoon slot is selected, turn it dark green
+            afternoonSlotButton.setBackgroundColor(ContextCompat.getColor(this, R.color.dark_green))
+            selectedTime = "13:00 - 18:00" // Set the selected time
+
+            // Disable the morning slot button
+            morningSlotButton.isEnabled = false
+            morningSlotButton.setBackgroundColor(ContextCompat.getColor(this, R.color.button_disabled))
+
+            // Enable the continue button if conditions are met
+            enableContinueButtonIfReady(continueButton)
+
+        }
+        val calendarView = findViewById<CalendarView>(R.id.calendarView)
+
+        calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
+            // Optionally show the selected date as a toast (or perform any action you need)
+            Toast.makeText(this, "Selected date: $dayOfMonth/${month + 1}/$year", Toast.LENGTH_SHORT).show()
+
+            // Set the custom drawable background for the selected date
+            calendarView.setDateTextAppearance(R.style.CustomDateTextAppearance)  // Optional: Custom text appearance
+        }
+
     }
 }
