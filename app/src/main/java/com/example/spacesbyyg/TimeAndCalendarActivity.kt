@@ -276,51 +276,54 @@ class TimeAndCalendarActivity : AppCompatActivity() {
         if (this::selectedDate.isInitialized && this::selectedTime.isInitialized) {
             continueButton.isEnabled = true
             continueButton.backgroundTintList =
-                ContextCompat.getColorStateList(this, R.color.lime_green)
+                ContextCompat.getColorStateList(this, R.color.button_green)
         }
     }
 
-    // New: Listener for Time Slot Buttons
     private fun setupTimeSlotButtonListeners(
         morningSlotButton: Button,
         afternoonSlotButton: Button,
         continueButton: Button
     ) {
+        // Set click listeners for both buttons
         morningSlotButton.setOnClickListener {
-            // If morning slot is selected, turn it dark green
-            morningSlotButton.setBackgroundColor(ContextCompat.getColor(this, R.color.dark_green))
-            selectedTime = "8:00 - 12:00" // Set the selected time
-
-            // Disable the afternoon slot button
-            afternoonSlotButton.isEnabled = false
-            afternoonSlotButton.setBackgroundColor(ContextCompat.getColor(this, R.color.button_disabled))
-
-            // Enable the continue button if conditions are met
-            enableContinueButtonIfReady(continueButton)
+            selectTimeSlot(morningSlotButton, afternoonSlotButton, "8:00 - 12:00", continueButton)
         }
 
         afternoonSlotButton.setOnClickListener {
-            // If afternoon slot is selected, turn it dark green
-            afternoonSlotButton.setBackgroundColor(ContextCompat.getColor(this, R.color.dark_green))
-            selectedTime = "13:00 - 18:00" // Set the selected time
-
-            // Disable the morning slot button
-            morningSlotButton.isEnabled = false
-            morningSlotButton.setBackgroundColor(ContextCompat.getColor(this, R.color.button_disabled))
-
-            // Enable the continue button if conditions are met
-            enableContinueButtonIfReady(continueButton)
-
+            selectTimeSlot(afternoonSlotButton, morningSlotButton, "13:00 - 18:00", continueButton)
         }
-        val calendarView = findViewById<CalendarView>(R.id.calendarView)
+    }
 
-        calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            // Optionally show the selected date as a toast (or perform any action you need)
-            Toast.makeText(this, "Selected date: $dayOfMonth/${month + 1}/$year", Toast.LENGTH_SHORT).show()
+    /**
+     * Selects the clicked time slot, disables the other, and enables the continue button.
+     *
+     * @param selectedButton The button that was clicked.
+     * @param otherButton The button that should be disabled.
+     * @param time The selected time slot.
+     * @param continueButton The continue button that should be enabled when a selection is made.
+     */
+    private fun selectTimeSlot(
+        selectedButton: Button,
+        otherButton: Button,
+        time: String,
+        continueButton: Button
+    ) {
+        // Change selected button appearance and state
+        selectedButton.setBackgroundColor(ContextCompat.getColor(this, R.color.dark_green))
+        selectedButton.isSelected = true
+        selectedTime = time
 
-            // Set the custom drawable background for the selected date
-            calendarView.setDateTextAppearance(R.style.CustomDateTextAppearance)  // Optional: Custom text appearance
-        }
+        // Re-enable and reset the other button
+        otherButton.isEnabled = true
+        otherButton.setBackgroundColor(ContextCompat.getColor(this, R.color.lime_green))
+        otherButton.isSelected = true
 
+        // Disable the other button to prevent selection while one is active
+        otherButton.isEnabled = true
+        otherButton.setBackgroundColor(ContextCompat.getColor(this, R.color.button_disabled))
+
+        // Enable continue button if a time slot is selected
+        enableContinueButtonIfReady(continueButton)
     }
 }

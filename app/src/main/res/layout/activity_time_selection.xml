@@ -19,8 +19,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:visibility="gone"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="16dp"
+        android:visibility="gone">
 
         <Button
             android:id="@+id/morningSlotButton"
@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:text="8:00 - 12:00"
             android:padding="8dp"
+            android:layout_marginRight="15dp"
             android:backgroundTint="#8ED567" />
 
         <Button
@@ -36,6 +37,7 @@
             android:layout_height="wrap_content"
             android:text="13:00 - 18:00"
             android:padding="8dp"
+
             android:backgroundTint="#8ED567" />
     </LinearLayout>
 
@@ -45,7 +47,6 @@
         android:id="@+id/continueButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        
         android:text="Fortsätta"
         android:layout_marginTop="16dp"
         android:enabled="false" />

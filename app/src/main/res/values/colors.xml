@@ -5,7 +5,7 @@
     <color name="lime_green">#32CD32</color>
     <color name="spaces">#1E1E1E</color>
     <color name="button_green">#8ED567</color>
-    <color name="button_disabled">#A9A9A9</color> <!-- For gray (darker_gray) -->
+    <color name="button_disabled">#8ED567</color> <!-- For gray (darker_gray) -->
     <color name="dark_green">#006400</color> <!-- Dark green color -->
 
 </resources>
