@@ -41,6 +41,7 @@ class TimeAndCalendarActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_time_selection)
 
+
         // Retrieve the selected room from the intent
         selectedRoom = intent.getStringExtra("room") ?: ""
 
@@ -51,6 +52,16 @@ class TimeAndCalendarActivity : AppCompatActivity() {
         val afternoonSlotButton: Button = findViewById(R.id.afternoonSlotButton)
         val continueButton: Button = findViewById(R.id.continueButton)
         val backToRoomsButton: Button = findViewById(R.id.backToRoomsButton)
+
+
+        // Override CalendarView selection color
+        try {
+            val field = CalendarView::class.java.getDeclaredField("mDaySelectorColor")
+            field.isAccessible = true
+            field.set(calendarView, ContextCompat.getColor(this, R.color.button_green))
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
 
         // Disable continue button initially
         continueButton.isEnabled = false
@@ -78,7 +89,7 @@ class TimeAndCalendarActivity : AppCompatActivity() {
                 // The selected date is in the past, no bookings allowed
                 timeSlotLayout.visibility = View.GONE
                 continueButton.visibility = View.GONE
-                Toast.makeText(this, "Cannot book in the past.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Kan inte boka i det förflutna.", Toast.LENGTH_SHORT).show()
                 return@setOnDateChangeListener
             }
 
@@ -94,7 +105,7 @@ class TimeAndCalendarActivity : AppCompatActivity() {
             if (dayOfWeek == Calendar.SUNDAY) {
                 timeSlotLayout.visibility = View.GONE
                 continueButton.visibility = View.GONE
-                Toast.makeText(this, "Bookings are not allowed on weekends.", Toast.LENGTH_SHORT)
+                Toast.makeText(this, "Bokningar är inte tillåtna på helger.", Toast.LENGTH_SHORT)
                     .show()
                 return@setOnDateChangeListener
             }
@@ -109,13 +120,13 @@ class TimeAndCalendarActivity : AppCompatActivity() {
         morningSlotButton.setOnClickListener {
             selectedTime = "8:00 - 12:00"
             enableContinueButtonIfReady(continueButton)
-            Toast.makeText(this, "Selected Morning Slot", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Vald morgonsplats", Toast.LENGTH_SHORT).show()
         }
 
         afternoonSlotButton.setOnClickListener {
             selectedTime = "13:00 - 18:00"
             enableContinueButtonIfReady(continueButton)
-            Toast.makeText(this, "Selected Afternoon Slot", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Vald eftermiddagsplats", Toast.LENGTH_SHORT).show()
         }
 
         // Continue Button Logic
@@ -127,7 +138,7 @@ class TimeAndCalendarActivity : AppCompatActivity() {
                 intent.putExtra("time", selectedTime)
                 startActivity(intent)
             } else {
-                Toast.makeText(this, "Please select a date and time", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Välj datum och tid", Toast.LENGTH_LONG).show()
             }
         }
 
@@ -176,7 +187,7 @@ class TimeAndCalendarActivity : AppCompatActivity() {
                 setupTimeSlotButtonListeners(morningSlotButton, afternoonSlotButton, continueButton)
             }
             .addOnFailureListener {
-                Toast.makeText(this, "Failed to fetch availability", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Det gick inte att hämta tillgänglighet", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -222,7 +233,7 @@ class TimeAndCalendarActivity : AppCompatActivity() {
                             val remainingHours = 11 - currentHour // approximate until 12:00
                             Toast.makeText(
                                 this,
-                                "Hurry! Approximately $remainingHours hour(s) left for the morning slot.",
+                                "Skynda! Cirka $remainingHours timme(r) kvar till morgonsplats.",
                                 Toast.LENGTH_LONG
                             ).show()
 
@@ -251,7 +262,7 @@ class TimeAndCalendarActivity : AppCompatActivity() {
                             val remainingHours = 17 - currentHour // approximate until 18:00
                             Toast.makeText(
                                 this,
-                                "Hurry! Approximately $remainingHours hour(s) left for the afternoon slot.",
+                                "Skynda! Cirka $remainingHours timme(r) kvar till eftermiddagsplats.",
                                 Toast.LENGTH_LONG
                             ).show()
                         }
@@ -310,13 +321,13 @@ class TimeAndCalendarActivity : AppCompatActivity() {
         continueButton: Button
     ) {
         // Change selected button appearance and state
-        selectedButton.setBackgroundColor(ContextCompat.getColor(this, R.color.dark_green))
+        selectedButton.setBackgroundColor(ContextCompat.getColor(this, R.color.button_enabled))
         selectedButton.isSelected = true
         selectedTime = time
 
         // Re-enable and reset the other button
         otherButton.isEnabled = true
-        otherButton.setBackgroundColor(ContextCompat.getColor(this, R.color.lime_green))
+        otherButton.setBackgroundColor(ContextCompat.getColor(this, R.color.button_green))
         otherButton.isSelected = true
 
         // Disable the other button to prevent selection while one is active

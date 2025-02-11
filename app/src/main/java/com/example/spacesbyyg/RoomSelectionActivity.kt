@@ -1,4 +1,3 @@
-// RoomSelectionActivity.kt
 package com.example.spacesbyyg
 
 import android.content.Intent
@@ -7,10 +6,6 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import android.os.Build;
-import android.view.View;
-import android.view.WindowManager;
-import android.graphics.Color;
 
 class RoomSelectionActivity : AppCompatActivity() {
 
@@ -19,21 +14,6 @@ class RoomSelectionActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val window = window
-            // Clear FLAG_TRANSLUCENT_STATUS flag:
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            // Add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            // Set the status bar to transparent
-            window.statusBarColor = Color.TRANSPARENT
-
-            // Make the content appear behind the status bar
-            window.decorView.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        }
-
         setContentView(R.layout.activity_room_selection)
 
         // UI Elements
@@ -44,9 +24,9 @@ class RoomSelectionActivity : AppCompatActivity() {
         // Disable Continue button initially
         continueButton.isEnabled = false
 
-        // Original button colors
-        val originalButtonColor = ContextCompat.getColor(this, android.R.color.darker_gray)
-        val selectedButtonColor = ContextCompat.getColor(this, android.R.color.holo_blue_light)
+        // Load colors from resources
+        val selectedButtonColor = ContextCompat.getColor(this, R.color.button_enabled)  // Dark Green
+        val unselectedButtonColor = ContextCompat.getColor(this, R.color.button_disabled) // Light Green
 
         // Room Selection Logic
         conferenceRoomButton.setOnClickListener {
@@ -56,7 +36,7 @@ class RoomSelectionActivity : AppCompatActivity() {
                 conferenceRoomButton,
                 creativeRoomButton,
                 selectedButtonColor,
-                originalButtonColor
+                unselectedButtonColor
             )
             continueButton.isEnabled = true // Enable Continue button
         }
@@ -68,7 +48,7 @@ class RoomSelectionActivity : AppCompatActivity() {
                 creativeRoomButton,
                 conferenceRoomButton,
                 selectedButtonColor,
-                originalButtonColor
+                unselectedButtonColor
             )
             continueButton.isEnabled = true // Enable Continue button
         }
@@ -76,9 +56,8 @@ class RoomSelectionActivity : AppCompatActivity() {
         // Continue Button Logic
         continueButton.setOnClickListener {
             if (roomSelected) {
-                // Pass the selected room to the next activity
                 val intent = Intent(this, TimeAndCalendarActivity::class.java)
-                intent.putExtra("room", selectedRoom) // Passing selected room to next activity
+                intent.putExtra("room", selectedRoom)
                 startActivity(intent)
             } else {
                 Toast.makeText(this, "Vänligen välj ett rum", Toast.LENGTH_SHORT).show()
@@ -91,9 +70,9 @@ class RoomSelectionActivity : AppCompatActivity() {
         selectedButton: Button,
         otherButton: Button,
         selectedColor: Int,
-        originalColor: Int
+        unselectedColor: Int
     ) {
-        selectedButton.setBackgroundColor(selectedColor)
-        otherButton.setBackgroundColor(originalColor)
+        selectedButton.setBackgroundColor(selectedColor) // Dark Green for selected button
+        otherButton.setBackgroundColor(unselectedColor)  // Light Green for unselected button
     }
 }

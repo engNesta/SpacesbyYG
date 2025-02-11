@@ -214,7 +214,7 @@ class AnalyticsActivity : AppCompatActivity() {
 
         // Create a BarDataSet to hold the data for the chart
         val dataSet = BarDataSet(entries, "")
-        dataSet.color = ContextCompat.getColor(this, R.color.lime_green) // Give bars a green color
+        dataSet.color = ContextCompat.getColor(this, R.color.button_green) // Give bars a green color
         dataSet.valueTextColor = Color.WHITE // Values above bars in white for contrast
         dataSet.valueTextSize = 14f // Larger text size for readability
         dataSet.setDrawValues(true) // Ensure values are shown above bars
